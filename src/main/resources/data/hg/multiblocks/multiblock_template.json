@@ -1,0 +1,27 @@
+{
+	"id": "eternitek:turbine",
+	"controller": "minecraft:iron_block",
+	"key": {
+		"#": "minecraft:iron_block",
+		"@": "minecraft:redstone_lamp",
+		"0": "minecraft:glass",
+		"R": "minecraft:redstone_block"
+	},
+	"pattern": [
+		[
+			"###",
+			"###",
+			"###"
+		],
+		[
+			"000",
+			"0#0",
+			"000"
+		],
+		[
+			"R@R",
+			"@#@",
+			"R@R"
+		]
+	]
+}
