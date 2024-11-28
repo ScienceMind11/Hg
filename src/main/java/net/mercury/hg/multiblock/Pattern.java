@@ -56,7 +56,9 @@ public class Pattern {
 
     }
 
-    public record Data(Identifier id, RegistryEntryList<Block> controller, Map<Character, RegistryEntryList<Block>> key, List<List<String>> pattern) {
+    public record Data(Identifier id, Character controller, Map<Character, RegistryEntryList<Block>> key, List<List<String>> pattern) {
+
+        private static final Codec<Character> CONTROLLER_CODEC = Codec.STRING.comapFlatMap(Pattern.Data::validateKey, String::valueOf);
 
         private static final Codec<Character> KEY_ENTRY_CODEC = Codec.STRING.comapFlatMap(Pattern.Data::validateKey, String::valueOf);
 
@@ -67,7 +69,7 @@ public class Pattern {
                 // Identifier
                 Identifier.CODEC.fieldOf("id").forGetter(Data::id),
                 // A list of blocks, a single block, or a block tag
-                RegistryCodecs.entryList(RegistryKeys.BLOCK).fieldOf("controller").forGetter(Data::controller),
+                CONTROLLER_CODEC.fieldOf("controller").forGetter(Data::controller),
                 // Map of key-value pairs for a character and a list of blocks/single block/block tag
                 Codecs.strictUnboundedMap(KEY_ENTRY_CODEC, RegistryCodecs.entryList(RegistryKeys.BLOCK)).fieldOf("key").forGetter(Data::key),
                 // List of lists of strings to form 3d pattern for multiblock (characters map to "key")
@@ -88,9 +90,8 @@ public class Pattern {
             for(List<String> stringList : pattern) {
                 if(stringList.size() > 16) {
                     return DataResult.error(() -> "Multiblock cannot be larger than 16 blocks");
-                }
-                for(String string : stringList) {
-
+                } else if(stringList.isEmpty()) {
+                    return DataResult.error(() -> "Multiblock cannot be empty");
                 }
             }
             return DataResult.success(pattern);
