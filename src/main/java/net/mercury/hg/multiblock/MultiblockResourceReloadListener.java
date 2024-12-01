@@ -89,13 +89,13 @@ public class MultiblockResourceReloadListener implements SimpleSynchronousResour
                         )
                 );
 
-                PlaceBlockCallback.EVENT.register((context, placementState) -> {
-
-                    if(placementState.isIn(data.key().get(data.controller()))) {
-                        blockPattern.searchAround(context.getWorld(), context.getBlockPos());
-                    }
-
-                });
+//                PlaceBlockCallback.EVENT.register((context, placementState) -> {
+//
+//                    if(placementState.isIn(data.key().get(data.controller()))) {
+//                        blockPattern.searchAround(context.getWorld(), context.getBlockPos());
+//                    }
+//
+//                });
 
             } catch(Exception except) {
                 HgMod.LOGGER.error("Error occurred loading multiblock {} from resource, error: {}", id, except);
